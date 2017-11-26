@@ -1,4 +1,6 @@
 import pandas as pd
+
+print('start rank data ...')
 feature_type = pd.read_csv('../input/features_type.csv')
 feature_type_numeric = feature_type[feature_type.type == 'numeric'].feature
 
@@ -18,8 +20,13 @@ for feature in feature_type_numeric:
     X_test_rank['r' + feature] = X_test[feature].rank(method='max')
 X_test_rank.to_csv('../intermediate_data/test_x_rank.csv', index=None)
 
-X_train_unlabeled = pd.read_csv('../input/train_unlabeled.csv')
+X_train_unlabeled_1 = pd.read_csv('../input/train_unlabeled_1.csv')
+X_train_unlabeled_2 = pd.read_csv('../input/train_unlabeled_2.csv')
+X_train_unlabeled_3 = pd.read_csv('../input/train_unlabeled_3.csv')
+
+X_train_unlabeled = pd.concat([X_train_unlabeled_1, X_train_unlabeled_2, X_train_unlabeled_3], axis=0)
 X_train_unlabeled_rank = pd.DataFrame(X_train_unlabeled.uid, columns=['uid'])
 for feature in feature_type_numeric:
     X_train_unlabeled_rank['r' + feature] = X_train_unlabeled[feature].rank(method='max')
 X_train_unlabeled_rank.to_csv('../intermediate_data/train_unlabeled_rank.csv', index=None)
+print('rank finish.')
